@@ -9,7 +9,7 @@ function setup() {
     bounds = new Bounds(50,200,200)
 
     ball = new Ball(10,100,0, -1);
-    
+    bounds.populate();
     // translate(200,200)
     // background(200);
     // for(let i = 0; i<balls.length; i++){

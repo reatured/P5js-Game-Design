@@ -14,7 +14,8 @@ class Ball {
     let resize = 4
     if (this.pos.y <= -bounds.y + this.r) {
       this.pos.y = -bounds.y + this.r;
-      this.vel.y *= -1.01;
+      this.vel.y *= -1;
+      this.vel.y += 0.2
     }
 
     if (this.pos.x >= bounds.x - this.renderZ()) {
@@ -44,7 +45,7 @@ class Ball {
     let gravity = createVector(0, -0.2, 0);
     this.applyForce(gravity)
     if (mouseIsPressed) {
-      let wind = createVector(0.02, 0, 0.02)
+      let wind = createVector(0.02, 0, 0.05)
       this.applyForce(wind)
     }
     this.vel.add(this.acc)
@@ -65,6 +66,7 @@ class Ball {
     push()
     fill(this.color)
     ellipse(x, y, w)
+    fill('black')
     text(int(this.index), x, y)
     text(int(this.pos.x), x, 100)
     text(int(this.pos.z), x, 120)
