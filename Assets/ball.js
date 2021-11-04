@@ -11,39 +11,57 @@ class Ball {
     this.test
     this.color = color(255)
     this.destroyTime
+    this.movingForware = false //ball's moving direction
+    this.served = false;
   }
 
   edges() {
     let resize = 4
     if (this.pos.y <= -bounds.y + this.r) {
+      a_ballWithTable.play()
       this.pos.y = -bounds.y + this.r;
       this.vel.y *= -1;
-      this.vel.y += 0.2
+      this.vel.y += 0.8
     }
 
     if (this.pos.x >= bounds.x - this.renderZ()) {
-
+      this.pos.x = bounds.x - this.renderZ();
+      this.vel.x *= -1;
     } else if (this.pos.x <= -bounds.x + this.renderZ()) {
-
+      this.pos.x = -bounds.x + this.renderZ();
+      this.vel.x *= -1;
     }
 
     if (this.pos.z >= bounds.z - this.r) {
-      this.destroyTime = millis() + destroySeconds * 1000
-      ballsToBeDestoried.push(ball)
-      ball = 0;
-      this.fly()
-      this.render()
+      // this.destroyTime = millis() + destroySeconds * 1000
+      // ballsToBeDestoried.push(ball)
+      // ball = 0;
+      // this.fly()
+      // this.render()
+      this.pos.z = bounds.z - this.r;
+      this.vel.z *= -1;
+      if(this.served){
+        a_ballWithPaddle.play()
+      }
     } else if (this.pos.z <= -bounds.z + this.r) {
       this.pos.z = -bounds.z + this.r;
       this.vel.z *= -1;
-
+      
+      
+      this.movingForware = false
     }
   }
 
   serve() {
-    let x = map(mouseX, 0, 400, -0.5, 0.5)
-    this.vel = createVector(x, -5, 4)
+    let x = map(mouseX, 0, 400, -0.5, 1)
+    if(this.served != true){
+      this.vel = createVector(x, -5, 4)
+    }else{
+      this.vel = createVector(x, 3, 6)
+    }
+    
     a_ballWithPaddle.play()
+    this.served = true
   }
 
   applyForce(force) {
@@ -51,10 +69,12 @@ class Ball {
   }
 
   updatePosition() {
-    let gravity = createVector(0, -0.3, 0);
+    let gravity = createVector(0, -0.9, 0);
     this.applyForce(gravity)
     if (mouseIsPressed) {
+      if(this.movingForware == false)
       this.serve();
+      this.movingForware = true;
     }
     this.vel.add(this.acc)
     this.pos.add(this.vel)
