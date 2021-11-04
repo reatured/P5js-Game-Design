@@ -1,3 +1,5 @@
+
+
 class Ball {
   constructor(x, y, z, index) {
     this.pos = createVector(x, y, z);
@@ -8,6 +10,7 @@ class Ball {
     this.index = index
     this.test
     this.color = color(255)
+    this.destroyTime
   }
 
   edges() {
@@ -19,22 +22,28 @@ class Ball {
     }
 
     if (this.pos.x >= bounds.x - this.renderZ()) {
-      this.pos.x = bounds.x - this.renderZ();
-      this.vel.x *= -1;
+
     } else if (this.pos.x <= -bounds.x + this.renderZ()) {
-      this.pos.x = -bounds.x + this.renderZ();
-      this.vel.x *= -1;
+
     }
 
     if (this.pos.z >= bounds.z - this.r) {
-      this.pos.z = bounds.z - this.r;
-      this.vel.z *= -1;
-      bounds.backFace();
+      this.destroyTime = millis() + destroySeconds * 1000
+      ballsToBeDestoried.push(ball)
+      ball = 0;
+      this.fly()
+      this.render()
     } else if (this.pos.z <= -bounds.z + this.r) {
       this.pos.z = -bounds.z + this.r;
       this.vel.z *= -1;
-      bounds.frontFace();
+
     }
+  }
+
+  serve() {
+    let x = map(mouseX, 0, 400, -0.5, 0.5)
+    this.vel = createVector(x, -5, 4)
+    a_ballWithPaddle.play()
   }
 
   applyForce(force) {
@@ -42,11 +51,10 @@ class Ball {
   }
 
   updatePosition() {
-    let gravity = createVector(0, -0.2, 0);
+    let gravity = createVector(0, -0.3, 0);
     this.applyForce(gravity)
     if (mouseIsPressed) {
-      let wind = createVector(0.02, 0, 0.05)
-      this.applyForce(wind)
+      this.serve();
     }
     this.vel.add(this.acc)
     this.pos.add(this.vel)
@@ -55,21 +63,31 @@ class Ball {
 
   }
 
+  fly(){
+    let gravity = createVector(0, -0.3, 0);
+    this.applyForce(gravity)
+    this.vel.add(this.acc)
+    this.pos.add(this.vel)
+    this.acc.set(0, 0, 0)
+  }
+
   render() {
-    
+
 
     let x = this.renderX();
     let y = this.renderY();
     let w = this.renderZ();
-    
+
     // console.log(y)S
     push()
     fill(this.color)
     ellipse(x, y, w)
     fill('black')
-    text(int(this.index), x, y)
-    text(int(this.pos.x), x, 100)
-    text(int(this.pos.z), x, 120)
+    // text(int(this.index), x, y)
+    text(this.vel.x, 0, 80)
+    text(int(this.vel.y), 0, 100)
+    text(int(this.vel.z), 0, 120)
+    text(this.vel.mag(), 0, 140)
     pop()
     return createVector(x, y)
   }
@@ -100,5 +118,17 @@ class Ball {
     this.color = map(this.pos.z, bounds.z, -bounds.z, 0, 255)
 
     return max(0, map(this.distance, 0, 400, this.r, this.r / 2))
+  }
+
+  destroy() {
+    this.fly()
+    this.render()
+
+
+    if (millis() > this.destroyTime) {
+      ball = new Ball(10, 50, -200, -1);
+      ballsToBeDestoried.shift();
+
+    }
   }
 }

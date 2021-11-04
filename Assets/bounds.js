@@ -31,7 +31,7 @@ class Bounds {
         y += this.netHight
         array.push(new Ball(x, y, z, 11))
         this.getRenderResult(array)
-        console.log(this.pivots)
+
     }
 
     getRenderResult(array) {
