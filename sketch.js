@@ -9,6 +9,13 @@ let ienumerators = []
 let destroySeconds = 2
 let a_ballWithTable
 let a_ballWithPaddle 
+let opponent
+let myPaddle
+let canHitBall = true;
+let capsule = null
+let hitPoint = null
+
+
 function preload() {
   a_ballWithTable = loadSound('Audios/BallHTable.mp3')
   a_ballWithPaddle = loadSound('Audios/BallHPaddle.mp3')
@@ -19,10 +26,10 @@ function setup() {
   createCanvas(w, h);
   camera = new MyCam();
   bounds = new Bounds(50, 200, 200)
-
-  ball = new Ball(10, 50, -200, -1);
+  myPaddle = new Paddle(createVector(mouseX, mouseY))
+  ball = new Ball(10, 50, -180, -1);
   bounds.populate();
-
+  opponent = new Opponent()
 }
 
 function draw() {
@@ -37,6 +44,8 @@ function draw() {
     ballsToBeDestoried[i].destroy();
   }
 
+  opponent.render();
+
   bounds.render();
 
   if(ball != 0){
@@ -49,12 +58,20 @@ function draw() {
     ball.render();
     myDebugger()
   }
+  
+
+  // ellipse(mouseX - 200, mouseY - 200, 32)
+
+  if(capsule != null){
+    capsule.render()
+  }
+
+  if(hitPoint != null){
+    hitPoint.render()
+  }
 
 
-  ellipse(mouseX - 200, mouseY - 200, 32)
-
-
- 
+  myPaddle.updatePos();
   text(ballsToBeDestoried.length, 200, 140)
   
 }
@@ -66,6 +83,10 @@ function myDebugger() {
   let h = 50
 
   rect(x, y, w, h)
+  push()
+  strokeWeight(10)
+  point(x + w/2, y+h)
+  pop()
   let bx = ball.pos.z
   bx = map(bx, 200, -200, x, x + w)
   let by = ball.pos.y
@@ -75,4 +96,5 @@ function myDebugger() {
   strokeWeight(5)
   point(bx, by)
   pop()
+  // console.log(ball.pos)
 }

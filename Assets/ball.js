@@ -6,13 +6,14 @@ class Ball {
     this.vel = createVector(0, 0, 0);
     this.acc = createVector(0, 0, 0)
     this.distance
-    this.r = 32
+    this.r = 16
     this.index = index
     this.test
     this.color = color(255)
     this.destroyTime
-    this.movingForware = false //ball's moving direction
+    this.movingForward = false //ball's moving direction
     this.served = false;
+
   }
 
   edges() {
@@ -21,7 +22,7 @@ class Ball {
       a_ballWithTable.play()
       this.pos.y = -bounds.y + this.r;
       this.vel.y *= -1;
-      this.vel.y += 0.8
+      this.vel.y += 0.7
     }
 
     if (this.pos.x >= bounds.x - this.renderZ()) {
@@ -32,7 +33,7 @@ class Ball {
       this.vel.x *= -1;
     }
 
-    if (this.pos.z >= bounds.z - this.r) {
+    if (this.pos.z >= bounds.z - this.r) { //opponent play
       // this.destroyTime = millis() + destroySeconds * 1000
       // ballsToBeDestoried.push(ball)
       // ball = 0;
@@ -40,28 +41,34 @@ class Ball {
       // this.render()
       this.pos.z = bounds.z - this.r;
       this.vel.z *= -1;
+      this.movingForward = false
+      // console.log(this.movingForward +" || "+ frameCount)
       if(this.served){
         a_ballWithPaddle.play()
       }
-    } else if (this.pos.z <= -bounds.z + this.r) {
-      this.pos.z = -bounds.z + this.r;
-      this.vel.z *= -1;
+    } else if (this.pos.z <= -bounds.z + this.r) {//I play
+      // this.pos.z = -bounds.z + this.r;
+      // this.vel.z *= -1;
+      if(this.served){
+        myPaddle.returned();
+        this.movingForward = true
+        // console.log(this.movingForward +" || "+  frameCount  +" ||Iplay ")
+      }
       
-      
-      this.movingForware = false
     }
   }
 
   serve() {
+    
+
+
+    
     let x = map(mouseX, 0, 400, -0.5, 1)
-    if(this.served != true){
-      this.vel = createVector(x, -5, 4)
-    }else{
-      this.vel = createVector(x, 3, 6)
-    }
+    this.vel = createVector(x, -5, 4)
     
     a_ballWithPaddle.play()
     this.served = true
+    this.movingForward = true;
   }
 
   applyForce(force) {
@@ -72,9 +79,8 @@ class Ball {
     let gravity = createVector(0, -0.9, 0);
     this.applyForce(gravity)
     if (mouseIsPressed) {
-      if(this.movingForware == false)
+      if(this.served == false)
       this.serve();
-      this.movingForware = true;
     }
     this.vel.add(this.acc)
     this.pos.add(this.vel)
@@ -135,9 +141,9 @@ class Ball {
   }
   renderZ() {
     this.distance = camera.pos.dist(this.pos)
-    this.color = map(this.pos.z, bounds.z, -bounds.z, 0, 255)
+    // this.color = map(this.pos.z, bounds.z, -bounds.z, 0, 255)
 
-    return max(0, map(this.distance, 0, 400, this.r, this.r / 2))
+    return max(0, map(this.distance, 0, 400, 2*this.r, this.r))
   }
 
   destroy() {
