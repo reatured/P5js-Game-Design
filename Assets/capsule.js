@@ -35,12 +35,12 @@ class Capsule {
         } else {
             this.color = 'blue'
         }
-        text(d, 300, 200)
+
     }
 
     render() {
         push()
-        console.log("capsule rendered")
+
         fill(this.color);
         strokeWeight(0);
         ellipse(this.x, this.y, this.r);
