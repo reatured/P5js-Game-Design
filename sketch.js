@@ -14,7 +14,8 @@ let myPaddle
 let canHitBall = true;
 let capsule = null
 let hitPoint = null
-
+let sceneState = 0
+let scene = null
 
 function preload() {
   a_ballWithTable = loadSound('Audios/BallHTable.mp3')
@@ -35,33 +36,44 @@ function setup() {
 function draw() {
 
   cursor('grab')
-
-  translate(200, 200)
+  translate(w/2, h/2)
   background(200);
 
-  for (let i = 0; i < ballsToBeDestoried.length; i++) {
+  // switch (sceneState) {
+  //   case 0:
+  //     console.log('Menu Scene');
+  //     scene0.render()
+  //     break;
+  //   case 1:
+  //     console.log('Play Scene');
+  //     scene1()
+  //     break;
+    
+  //   default:
+  //     console.log('Sorry, we are out of ' + SceneState + '.');
+  // }
 
+  
+ scene1()
+  
+  
+}
+
+function scene1(){
+  for (let i = 0; i < ballsToBeDestoried.length; i++) {
     ballsToBeDestoried[i].destroy();
   }
 
   opponent.render();
-
   bounds.render();
-
   if(ball != 0){
     ball.updatePosition();
 
   }
-
   if(ball != 0){
-
     ball.render();
-    myDebugger()
   }
   
-
-  // ellipse(mouseX - 200, mouseY - 200, 32)
-
   if(capsule != null){
     capsule.render()
   }
@@ -70,9 +82,8 @@ function draw() {
     hitPoint.render()
   }
 
-
   myPaddle.updatePos();
-  
+
 }
 
 function myDebugger() {

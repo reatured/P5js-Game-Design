@@ -1,9 +1,9 @@
 class Capsule {
     constructor(x, y, x1, y1, r) {
-        this.x = x - 200;
-        this.y = y - 200;
-        this.x1 = x1 - 200;
-        this.y1 = y1 - 200;
+        this.x = x - w/2;
+        this.y = y - h/2;
+        this.x1 = x1 - w/2;
+        this.y1 = y1 - h/2;
         this.r = r;
         this.vCenter = createVector(this.x1 - this.x, this.y1 - this.y);
 

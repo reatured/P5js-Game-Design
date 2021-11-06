@@ -11,7 +11,7 @@ class Paddle {
         // let movement = createVector(mouseX - 200, mouseY - 200)
         // movement.sub(this.pos)
         // // movement.limit(3)
-        this.pos = createVector(mouseX - 200, mouseY - 200)
+        this.pos = createVector(mouseX - w/2, mouseY - h/2)
         this.render()
         // console.log(this.hitArea +" || "+  frameCount  +" ||Iplay ")
         //entering hit area, 
@@ -19,8 +19,8 @@ class Paddle {
         if(ball.pos.z <-50 && this.hitArea == false && ball.movingForward == false){
             this.startPos = createVector(mouseX, mouseY)
             if(capsule != null){
-                capsule.x = mouseX - 200
-                capsule.y = mouseY - 200
+                capsule.x = mouseX - w/2
+                capsule.y = mouseY - h/2
 
             }
             

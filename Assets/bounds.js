@@ -54,6 +54,20 @@ class Bounds {
         //     this.pivots[2],
         //     this.pivots[3],
         // )
+        push()
+        fill(19, 41, 156)
+        stroke(255)
+        strokeWeight(4)
+        quad(
+            this.pivots[0].x,
+            this.pivots[0].y + 15,
+            this.pivots[0].x,
+            this.pivots[0].y,
+            this.pivots[4].x,
+            this.pivots[4].y,
+            this.pivots[4].x,
+            this.pivots[4].y + 15
+        )
         quad(
             this.pivots[1].x,
             this.pivots[1].y,
@@ -64,47 +78,24 @@ class Bounds {
             this.pivots[5].x,
             this.pivots[5].y
         )
-
+        
         line(
             0,
             this.pivots[1].y,
             0,
             this.pivots[0].y,
         )
+        pop()
 
-        // quad(
-        //     this.pivots[8].x,
-        //     this.pivots[8].y,
-        //     this.pivots[9].x,
-        //     this.pivots[9].y,
-        //     this.pivots[10].x,
-        //     this.pivots[10].y,
-        //     this.pivots[11].x,
-        //     this.pivots[11].y
-        // )
+        
+
+  
         if(this.netDrew == false){
             this.net()
         }else{
             this.netDrew = false
         }
  
-
-        
-        // line(
-        //     this.pivots[1].x,
-
-        // )
-
-        // quad(
-        //     this.pivots[4].render().x,
-        //     this.pivots[4].render().y,
-        //     this.pivots[5].render().x,
-        //     this.pivots[5].render().y,
-        //     this.pivots[7].render().x,
-        //     this.pivots[7].render().y,
-        //     this.pivots[6].render().x,
-        //     this.pivots[6].render().y
-        // )
     }
 
     net() {
