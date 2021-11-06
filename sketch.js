@@ -72,7 +72,6 @@ function draw() {
 
 
   myPaddle.updatePos();
-  text(ballsToBeDestoried.length, 200, 140)
   
 }
 

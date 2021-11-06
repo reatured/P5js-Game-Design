@@ -6,7 +6,8 @@ class Bounds {
         this.y = y;
         this.z = z;
         this.pivots = []
-        this.netHight = 40
+        this.netHight = 80
+        this.netDrew = false
     }
 
     populate() {
@@ -23,10 +24,10 @@ class Bounds {
         let y = -this.y + this.netHight
         let z = 0
         array.push(new Ball(x, y, z, 8))
-        y = -this.y 
+        y = -this.y
         array.push(new Ball(x, y, z, 9))
         x = -x
-        
+
         array.push(new Ball(x, y, z, 10))
         y += this.netHight
         array.push(new Ball(x, y, z, 11))
@@ -71,17 +72,24 @@ class Bounds {
             this.pivots[0].y,
         )
 
-        quad(
-            this.pivots[8].x,
-            this.pivots[8].y,
-            this.pivots[9].x,
-            this.pivots[9].y,
-            this.pivots[10].x,
-            this.pivots[10].y,
-            this.pivots[11].x,
-            this.pivots[11].y
-        )
+        // quad(
+        //     this.pivots[8].x,
+        //     this.pivots[8].y,
+        //     this.pivots[9].x,
+        //     this.pivots[9].y,
+        //     this.pivots[10].x,
+        //     this.pivots[10].y,
+        //     this.pivots[11].x,
+        //     this.pivots[11].y
+        // )
+        if(this.netDrew == false){
+            this.net()
+        }else{
+            this.netDrew = false
+        }
+ 
 
+        
         // line(
         //     this.pivots[1].x,
 
@@ -97,6 +105,22 @@ class Bounds {
         //     this.pivots[6].render().x,
         //     this.pivots[6].render().y
         // )
+    }
+
+    net() {
+        push()
+        fill(200, 200, 255,255)
+        quad(
+            this.pivots[8].x,
+            this.pivots[8].y,
+            this.pivots[9].x,
+            this.pivots[9].y,
+            this.pivots[10].x,
+            this.pivots[10].y,
+            this.pivots[11].x,
+            this.pivots[11].y
+        )
+        pop()
     }
 
     frontFace() {

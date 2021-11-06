@@ -7,7 +7,7 @@ class Capsule {
         this.r = r;
         this.vCenter = createVector(this.x1 - this.x, this.y1 - this.y);
 
-        this.color = color(198, 252, 0, 80)
+        this.color = color(198, 252, 0, 150)
     }
 
     collider(object) {

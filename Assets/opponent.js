@@ -6,7 +6,8 @@ class Opponent {
     }
 
     render() {
-
+        this.pos.x = ball.pos.x
+        this.pos.y = ball.pos.y
         let x = this.renderX();
         let y = this.renderY();
         let w = this.renderZ();
