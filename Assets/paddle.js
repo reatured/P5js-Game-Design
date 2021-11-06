@@ -18,10 +18,12 @@ class Paddle {
         //ball is not moving forward
         if(ball.pos.z <-50 && this.hitArea == false && ball.movingForward == false){
             this.startPos = createVector(mouseX, mouseY)
+            // this.endPos = createVector(mouseX, mouseY)
             if(capsule != null){
                 capsule.x = mouseX - w/2
                 capsule.y = mouseY - h/2
-
+                capsule.x1 = mouseX - w/2
+                capsule.y1 = mouseY - h/2
             }
             
             this.hitArea = true
@@ -57,7 +59,7 @@ class Paddle {
         y = min(20, y)
         // let y = map(endPos.y, )
         // let z = 
-        let returnVel =  createVector(x, y, 8)
+        let returnVel =  createVector(x, y, 10)
         ball.movingForward = true
         ball.vel = returnVel
         ball.color = 'white'

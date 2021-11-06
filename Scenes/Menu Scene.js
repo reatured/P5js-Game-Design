@@ -1,7 +1,7 @@
 class Scene0 {
     constructor() {
         camera = new MyCam();
-        this.button = new playButton(0, 100, 100, 50)
+        this.button = new playButton(0, 0, 100, 50)
         bounds = new Bounds(50, 200, 200)
         bounds.populate();
     }
