@@ -6,7 +6,7 @@ let w = 600
 let h = 400
 let img
 let ienumerators = []
-let destroySeconds = 2
+let destroySeconds = 0.8
 let a_ballWithTable
 let a_ballWithPaddle
 let opponent
@@ -16,6 +16,7 @@ let capsule = null
 let hitPoint = null
 let sceneState = 1
 let scene = null
+let mousePositionAdj
 
 function preload() {
   a_ballWithTable = loadSound('Audios/BallHTable.mp3')
@@ -25,6 +26,7 @@ function setup() {
   rectMode(CENTER)
   angleMode(DEGREES)
   createCanvas(w, h);
+  mousePositionAdj = createVector(- w/2,  - h/2)
   textAlign(CENTER, CENTER);
   // camera = new MyCam();
   // bounds = new Bounds(50, 200, 200)

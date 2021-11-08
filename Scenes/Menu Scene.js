@@ -3,13 +3,13 @@ class Scene0 {
         camera = new MyCam();
         this.button = new playButton(0, 0, 100, 50)
         bounds = new Bounds(50, 200, 200)
-        bounds.populate();
+        // bounds.populate();
     }
 
     render() {
 
 
-        bounds.render()
+        bounds.table()
         this.button.render()
 
     }
@@ -29,9 +29,9 @@ class playButton {
 
     render() {
 
-        let mou = createVector(mouseX-w/2, mouseY-h/2)
+        let mou = createVector(mouseX - w / 2, mouseY - h / 2)
         let isHovered = this.collider(mou, this.x, this.y, this.w, this.h)
-console.log(isHovered)
+
 
 
         push()
@@ -39,11 +39,11 @@ console.log(isHovered)
         if (isHovered) {
 
             fill(73, 127, 171)
-            if(mouseIsPressed){
+            if (mouseIsPressed) {
                 fill(73 + 100, 127 + 50, 171 + 50)
                 this.ready = true
             }
-            if(this.ready && !mouseIsPressed){
+            if (this.ready && !mouseIsPressed) {
                 scene = new Scene1()
             }
         }
@@ -72,5 +72,5 @@ console.log(isHovered)
         }
     }
 
-    
+
 }

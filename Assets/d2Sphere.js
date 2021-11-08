@@ -3,15 +3,14 @@ class d2Sphere{
       this.x = x
       this.y = y
       this.r = r
-      
+      this.color
       
     }
     
     render(){
       fill('white')
-      this.x = mouseX
-      this.y = mouseY
       strokeWeight(1)
+      fill(this.color)
       ellipse(this.x, this.y, this.r)
       
       
