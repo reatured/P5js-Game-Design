@@ -6,79 +6,73 @@ let w = 600
 let h = 400
 let img
 let ienumerators = []
-let destroySeconds = 2
+let destroySeconds = 0.8
 let a_ballWithTable
-let a_ballWithPaddle 
+let a_ballWithPaddle
 let opponent
 let myPaddle
 let canHitBall = true;
 let capsule = null
 let hitPoint = null
-let sceneState = 0
+let sceneState = 1
 let scene = null
+let mousePositionAdj
 
 function preload() {
   a_ballWithTable = loadSound('Audios/BallHTable.mp3')
   a_ballWithPaddle = loadSound('Audios/BallHPaddle.mp3')
 }
 function setup() {
-  
+  rectMode(CENTER)
   angleMode(DEGREES)
   createCanvas(w, h);
-  camera = new MyCam();
-  bounds = new Bounds(50, 200, 200)
-  myPaddle = new Paddle(createVector(mouseX, mouseY))
-  ball = new Ball(10, 50, -180, -1);
-  bounds.populate();
-  opponent = new Opponent()
+  mousePositionAdj = createVector(- w/2,  - h/2)
+  textAlign(CENTER, CENTER);
+  // camera = new MyCam();
+  // bounds = new Bounds(50, 200, 200)
+  // myPaddle = new Paddle(createVector(mouseX, mouseY))
+  // ball = new Ball(10, 50, -180, -1);
+  // bounds.populate();
+  // opponent = new Opponent()
+  translate(w / 2, h / 2)
+  scene = new Scene0()
+  // cursor('grab')
 }
 
 function draw() {
 
-  cursor('grab')
-  translate(w/2, h/2)
-  background(200);
 
-  // switch (sceneState) {
-  //   case 0:
-  //     console.log('Menu Scene');
-  //     scene0.render()
-  //     break;
-  //   case 1:
-  //     console.log('Play Scene');
-  //     scene1()
-  //     break;
-    
-  //   default:
-  //     console.log('Sorry, we are out of ' + SceneState + '.');
-  // }
+  translate(w / 2, h / 2)
+  background(209, 162, 33);
 
-  
- scene1()
-  
-  
+  scene.render()
+  // console.log(sceneState)
+
+  //  scene1()
+
+
 }
 
-function scene1(){
+function scene1() {
   for (let i = 0; i < ballsToBeDestoried.length; i++) {
     ballsToBeDestoried[i].destroy();
   }
 
   opponent.render();
   bounds.render();
-  if(ball != 0){
+  if (ball != 0) {
     ball.updatePosition();
 
   }
-  if(ball != 0){
+  if (ball != 0) {
     ball.render();
   }
-  
-  if(capsule != null){
+
+  if (capsule != null) {
     capsule.render()
   }
 
-  if(hitPoint != null){
+  if (hitPoint != null) {
     hitPoint.render()
   }
 
@@ -95,7 +89,7 @@ function myDebugger() {
   rect(x, y, w, h)
   push()
   strokeWeight(10)
-  point(x + w/2, y+h)
+  point(x + w / 2, y + h)
   pop()
   let bx = ball.pos.z
   bx = map(bx, 200, -200, x, x + w)

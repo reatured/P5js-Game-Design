@@ -1,5 +1,10 @@
+/*
+This ball class only does:
+1. Physics: bouncing, accelerating
+2. Render From 3d to 2D 
+3. Return ball's moving direction, is severed or not
 
-
+*/
 class Ball {
   constructor(x, y, z, index) {
     this.pos = createVector(x, y, z);
@@ -13,10 +18,12 @@ class Ball {
     this.destroyTime
     this.movingForward = false //ball's moving direction
     this.served = false;
-
+    this.fromPos = this.pos
+    this.passNet = false;
+    this.hitSphere = null;
   }
 
-  edges() {
+  edges() {//This need to be replaced with bounce, remove x, and z detection. 
     let resize = 4
     if (this.pos.y <= -bounds.y + this.r) {
       a_ballWithTable.play()
@@ -34,13 +41,7 @@ class Ball {
     }
 
     if (this.pos.z >= bounds.z - this.r) { //opponent play
-      // this.destroyTime = millis() + destroySeconds * 1000
-      // ballsToBeDestoried.push(ball)
-      // ball = 0;
-      // this.fly()
-      // this.render()
-      // this.pos.z = bounds.z - this.r;
-      // this.vel.z *= -1;
+
 
       this.vel = createVector(random(-1, 1), 8, -10)
       this.movingForward = false
@@ -60,17 +61,47 @@ class Ball {
     }
   }
 
-  serve() {
+  losePoint() {
+    this.destroyTime = millis() + destroySeconds * 1000
+    ballsToBeDestoried.push(ball)
+    ball = 0;
+    scene.hasBall = false
+    // this.fly()
+    // this.render()
+    // this.pos.z = bounds.z - this.r;
+    // this.vel.z *= -1;
+
+  }
+  destroy() {
+    this.fly()
+    this.render()
 
 
+    if (millis() > this.destroyTime) {
+      ball = new Ball(10, 50, -180, -1);
+      ballsToBeDestoried.shift();
+      myPaddle = new Paddle(createVector(mouseX, mouseY))
+      capsule = null
+      hitPoint = null
+    }
+  }
 
+  bounce() {
+    a_ballWithTable.play()
+    this.pos.y = this.fromPos.y;
+    this.vel.y *= -1;
 
-    let x = map(mouseX, 0, 400, -0.5, 1)
-    this.vel = createVector(x, -5, 4)
+    // this.vel.y += 0.7
+  }
+
+  serve() { //add if the ball is at serve or not
+    let x = map(mouseX, 0, 600, -1, 1)
+    this.vel = createVector(x, -5, 6)
 
     a_ballWithPaddle.play()
     this.served = true
     this.movingForward = true;
+
   }
 
   applyForce(force) {
@@ -87,7 +118,7 @@ class Ball {
     this.vel.add(this.acc)
     this.pos.add(this.vel)
     this.acc.set(0, 0, 0)
-    this.edges();
+    // this.edges(); //remove detection
 
   }
 
@@ -99,9 +130,8 @@ class Ball {
     this.acc.set(0, 0, 0)
   }
 
-  render() {
-
-
+  render() { //after the ball position is decided.
+    this.fromPos = this.pos
     let x = this.renderX();
     let y = this.renderY();
     let w = this.renderZ();
@@ -109,9 +139,10 @@ class Ball {
     // console.log(y)S
     push()
     fill(this.color)
-    
+
+    this.hitSphere = createVector(x, y, w)
     ellipse(x, y, w)
-    if(this.pos.z > 0 && this.served){
+    if (this.pos.z > 0 && this.served) {
       bounds.net()
       bounds.netDrew = true
     }
@@ -134,11 +165,12 @@ class Ball {
     return xr
   }
   renderY() {
+
     let a1 = 45
     let v1 = createVector(camera.lookV.y, camera.lookV.z)
     let v2 = this.pos.copy().sub(camera.pos)
     v2 = createVector(v2.y, v2.z)
-
+    // console.log(this.pos.y)
 
     let a2 = v1.angleBetween(v2)
     this.test = a2
@@ -153,15 +185,5 @@ class Ball {
     return max(0, map(this.distance, 0, 400, 2 * this.r, this.r))
   }
 
-  destroy() {
-    this.fly()
-    this.render()
-
-
-    if (millis() > this.destroyTime) {
-      ball = new Ball(10, 50, -200, -1);
-      ballsToBeDestoried.shift();
-
-    }
-  }
+  
 }

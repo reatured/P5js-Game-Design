@@ -1,3 +1,11 @@
+/*
+This ball class only does:
+1. Render opponent's paddle
+2. Render From 3d to 2D 
+3. Return ball's moving direction, is severed or not
+
+*/
+
 class Opponent {
     constructor() {
         this.pos = createVector(0, -160, 200)
@@ -6,8 +14,11 @@ class Opponent {
     }
 
     render() {
-        this.pos.x = ball.pos.x
-        this.pos.y = ball.pos.y
+        if(ball != 0){
+            this.pos.x = ball.pos.x
+            this.pos.y = ball.pos.y
+        }
+
         let x = this.renderX();
         let y = this.renderY();
         let w = this.renderZ();

@@ -16,31 +16,30 @@ class Capsule {
         let d
         if (ae.dot(this.vCenter) < 0) {
             d = ae.mag()
-            console.log("1")
 
         } else if (be.dot(this.vCenter) > 0) {
             d = be.mag()
-            console.log("2")
-
         } else {
             let mod = sqrt(this.vCenter.dot(this.vCenter))
             let n = abs(ae.y * this.vCenter.x - ae.x * this.vCenter.y)
             d = n / mod
-            console.log("3")
-
         }
         if (d < this.r / 2 + object.r / 2) {
-            this.color = 'red'
+            this.color = color(198, 252, 0, 100)
+            object.color = color(198, 252, 0, 200)
+            return true
 
         } else {
-            this.color = 'blue'
+            this.color = color(198, 50, 80, 100)
+            object.color = color(198, 50, 80, 200)
+            return false
         }
-        text(d, 300, 200)
+
     }
 
     render() {
         push()
-        console.log("capsule rendered")
+
         fill(this.color);
         strokeWeight(0);
         ellipse(this.x, this.y, this.r);
