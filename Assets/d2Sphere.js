@@ -10,10 +10,11 @@ class d2Sphere{
     render(){
       fill('white')
       strokeWeight(1)
+      push()
       fill(this.color)
       ellipse(this.x, this.y, this.r)
       
-      
+      pop()
     }
     
   }

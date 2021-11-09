@@ -19,8 +19,12 @@ class Ball {
     this.movingForward = false //ball's moving direction
     this.served = false;
     this.fromPos = this.pos
-    this.passNet = false;
+    this.passNet = false; //check net ball
     this.hitSphere = null;
+    this.bounced = false;
+    this.netBall = false;
+    this.bounceCount = 0
+    this.lostWay = 3;
   }
 
   edges() {//This need to be replaced with bounce, remove x, and z detection. 
@@ -61,19 +65,21 @@ class Ball {
     }
   }
 
-  losePoint() {
+  losePoint(how) {
+    this.lostWay = how // 0 net, 1, out, 2 miss
+    console.log(this.lostWay)
     this.destroyTime = millis() + destroySeconds * 1000
     ballsToBeDestoried.push(ball)
     ball = 0;
     scene.hasBall = false
-    // this.fly()
-    // this.render()
-    // this.pos.z = bounds.z - this.r;
-    // this.vel.z *= -1;
+    
+ 
 
   }
   destroy() {
-    this.fly()
+    if (this.netBall == false) {
+      this.fly()
+    }
     this.render()
 
 
@@ -86,11 +92,23 @@ class Ball {
     }
   }
 
+  fly() {
+    let gravity = createVector(0, -0.3, 0);
+    this.applyForce(gravity)
+    this.vel.add(this.acc)
+    this.pos.add(this.vel)
+    this.acc.set(0, 0, 0)
+  }
+
   bounce() {
+
     a_ballWithTable.play()
     this.pos.y = this.fromPos.y;
     this.vel.y *= -1;
-
+    this.bounced = true;
+    if (this.served) {
+      this.bounceCount += 1
+    }
     // this.vel.y += 0.7
   }
 
@@ -101,6 +119,8 @@ class Ball {
     a_ballWithPaddle.play()
     this.served = true
     this.movingForward = true;
+    this.passNet = false
+    // console.log(this.movingForward)
 
   }
 
@@ -122,13 +142,7 @@ class Ball {
 
   }
 
-  fly() {
-    let gravity = createVector(0, -0.3, 0);
-    this.applyForce(gravity)
-    this.vel.add(this.acc)
-    this.pos.add(this.vel)
-    this.acc.set(0, 0, 0)
-  }
+
 
   render() { //after the ball position is decided.
     this.fromPos = this.pos
@@ -136,24 +150,40 @@ class Ball {
     let y = this.renderY();
     let w = this.renderZ();
 
-    // console.log(y)S
-    push()
-    fill(this.color)
 
-    this.hitSphere = createVector(x, y, w)
-    ellipse(x, y, w)
-    if (this.pos.z > 0 && this.served) {
-      bounds.net()
-      bounds.netDrew = true
+    switch (sceneState) {
+      case 0:
+        return createVector(x, y)
+      case 1:
+        this.hitSphere = createVector(x, y, w)
+
+        push()
+        fill(this.color)
+
+
+
+
+
+        if (this.pos.z > 0 && this.served) {
+
+          ellipse(x, y, w)
+          bounds.net()
+
+        } else {
+
+          bounds.net()
+          ellipse(x, y, w)
+
+        }
+
+        pop()
+
+      default:
+        return createVector(x, y)
     }
-    fill('black')
-    // text(int(this.index), x, y)
-    // text(this.vel.x, 0, 80)
-    // text(int(this.vel.y), 0, 100)
-    // text(int(this.vel.z), 0, 120)
-    // text(this.vel.mag(), 0, 140)
-    pop()
-    return createVector(x, y)
+
+
+
   }
 
   renderX() {
@@ -185,5 +215,5 @@ class Ball {
     return max(0, map(this.distance, 0, 400, 2 * this.r, this.r))
   }
 
-  
+
 }

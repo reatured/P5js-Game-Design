@@ -14,9 +14,11 @@ let myPaddle
 let canHitBall = true;
 let capsule = null
 let hitPoint = null
-let sceneState = 1
+let sceneState = 0
 let scene = null
 let mousePositionAdj
+let gameUI
+
 
 function preload() {
   a_ballWithTable = loadSound('Audios/BallHTable.mp3')
@@ -28,15 +30,11 @@ function setup() {
   createCanvas(w, h);
   mousePositionAdj = createVector(- w/2,  - h/2)
   textAlign(CENTER, CENTER);
-  // camera = new MyCam();
-  // bounds = new Bounds(50, 200, 200)
-  // myPaddle = new Paddle(createVector(mouseX, mouseY))
-  // ball = new Ball(10, 50, -180, -1);
-  // bounds.populate();
-  // opponent = new Opponent()
+
   translate(w / 2, h / 2)
   scene = new Scene0()
-  // cursor('grab')
+  sceneState = 0;
+  // 
 }
 
 function draw() {
@@ -46,38 +44,21 @@ function draw() {
   background(209, 162, 33);
 
   scene.render()
-  // console.log(sceneState)
-
-  //  scene1()
-
-
 }
 
 function scene1() {
-  for (let i = 0; i < ballsToBeDestoried.length; i++) {
-    ballsToBeDestoried[i].destroy();
-  }
+  scene = new Scene1()
+  sceneState = 1
+}
 
-  opponent.render();
-  bounds.render();
-  if (ball != 0) {
-    ball.updatePosition();
+function scene2(){
+  scene = new Scene2()
+  sceneState = 2
+}
 
-  }
-  if (ball != 0) {
-    ball.render();
-  }
-
-  if (capsule != null) {
-    capsule.render()
-  }
-
-  if (hitPoint != null) {
-    hitPoint.render()
-  }
-
-  myPaddle.updatePos();
-
+function scene3(winState){
+  scene = new Scene3(winState)
+  sceneState = 3
 }
 
 function myDebugger() {

@@ -16,8 +16,8 @@ class Bounds {
         this.y = y;
         this.z = z;
         this.pivots = []
-        this.netHight = 80
-        this.netDrew = false
+        this.netHight = 60
+
         this.populate()
     }
 
@@ -43,55 +43,165 @@ class Bounds {
         y += this.netHight
         array.push(new Ball(x, y, z, 11))
         this.getRenderResult(array)
-
+console.log(array)
+console.log(this.pivots)
+console.log("Bounds")
     }
 
     getRenderResult(array) {
         for (let i = 0; i < array.length; i++) {
             this.pivots.push(array[i].render())
         }
+        console.log(this.pivots)
+console.log("test")
     }
 
 
     render() {
         this.table()
-        
-        
+
+
     }
 
-    bounceCheck(){
+    bounceCheck() {
+        
+
         let tableHeight = -this.y + ball.r
 
-        
+
         if (ball.pos.y <= tableHeight) {
+            
+            if (ball.bounceCount > 1) { 
+                if (ball.movingForward) {
+                    if (ball.pos.z < 0) {
+                        gameUI.iLose()
+                        ball.netBall = true
+                        ball.losePoint(0)
+                        console.log("I lose, net ball" + frameCount)
+                        return
+                    }
+
+                } else {
+                    if (ball.pos.z > 0) {
+                        gameUI.iWin()
+                        ball.netBall = true
+                        ball.losePoint(0)
+                        console.log("I win, net ball" + frameCount)
+                        return
+                    }
+                }
+
+
+
+            }
+
+
+
+            if (ball.pos.x > this.x || ball.pos.x < -this.x) {
+
+
+                if (ball.movingForward == true) {
+                    console.log("I lose, out xx" + frameCount)
+                    console.log(ball.movingForward)
+                    gameUI.iLose()
+                } else {
+                    console.log("I win, out" + frameCount)
+                    console.log(ball.movingForward)
+                    gameUI.iWin()
+
+                }
+                ball.losePoint(1)
+
+                return "out"
+            }
             ball.bounce()
+            
             if (ball.pos.y <= tableHeight) {
                 ball.pos.y = tableHeight
                 ball.fromPos.y = tableHeight
-                
-            }      
-        } 
+
+            }
+
+
+        }
+
+        let netHeight = -this.y + ball.r + this.netHight
+
+        if (ball.passNet == false) {
+
+            if (ball.movingForward) {
+
+
+                if (ball.pos.z > 0) {
+
+                    ball.passNet = true
+                    if (ball.pos.y < netHeight) {
+                        gameUI.iLose()
+                        ball.netBall = true
+                        ball.losePoint(0)
+                        console.log("I lose, net ball" + frameCount)
+
+                        return "net"
+
+                    }
+                }
+            } else if (!ball.movingForward) {
+                if (ball.pos.z < 0) {
+                    ball.passNet = true
+                    if (ball.pos.y < netHeight) {
+                        gameUI.iWin()
+                        ball.netBall = true
+                        ball.losePoint(0)
+                        console.log("I win, net ball" + frameCount)
+
+                        return "net"
+
+                    }
+                }
+            }
+
+
+
+
+        }
+
 
     }
 
-    referee(){
-        
+    referee() {
+
         if (ball.pos.z >= this.z - ball.r) { //opponent play
-
-            ball.vel = createVector(random(-1, 1), 8, -10)
-            ball.movingForward = false
-            if (ball.served) {
-              a_ballWithPaddle.play()
-            }
-          } else if (ball.pos.z <= -this.z + ball.r) {//I play
-
-            if (ball.served && ball!= 0) {
-                myPaddle.returned();
-                if(ball != 0){
-                    ball.movingForward = true
+            if (ball.bounced) {
+                ball.vel = createVector(random(-1, 1), 12, -8)
+                ball.movingForward = false
+                ball.passNet = false
+                ball.bounced = false
+                if (ball.served) {
+                    a_ballWithPaddle.play()
                 }
-                
+            } else {
+                ball.losePoint(1)
+                console.log("I lose, out" + frameCount)
+                gameUI.iLose()
+                return "out"
             }
+
+        } else if (ball.pos.z <= -this.z + ball.r) {//I play
+            if (ball.bounced) {
+                if (ball.served && ball != 0) {
+                    myPaddle.returned();
+                    if (ball != 0) {
+                        ball.movingForward = true
+                    }
+                }
+            } else {
+                ball.losePoint(1)
+
+                console.log("I win, out" + frameCount)
+                gameUI.iWin()
+                return "out"
+            }
+
 
         }
 
@@ -124,7 +234,7 @@ class Bounds {
             this.pivots[4].y + 15,
             this.pivots[4].x - 2,
             this.pivots[4].y + 50,
-            this.pivots[4].x -31 ,
+            this.pivots[4].x - 31,
             this.pivots[4].y + 50,
 
         )
@@ -160,13 +270,6 @@ class Bounds {
         )
         pop()
 
-        if (this.netDrew == false) {
-            this.net()
-        } else {
-            this.netDrew = false
-        }
-
-        
     }
 
     net() {

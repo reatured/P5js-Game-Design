@@ -1,7 +1,7 @@
 class Scene0 {
     constructor() {
         camera = new MyCam();
-        this.button = new playButton(0, 0, 100, 50)
+        this.button = new playButton(0, 0, 100, 50, "PLAY")
         bounds = new Bounds(50, 200, 200)
         // bounds.populate();
     }
@@ -10,6 +10,7 @@ class Scene0 {
 
 
         bounds.table()
+        bounds.net()
         this.button.render()
 
     }
@@ -18,13 +19,14 @@ class Scene0 {
 }
 
 class playButton {
-    constructor(x, y, w, h) {
+    constructor(x, y, w, h, text) {
         this.x = x
         this.y = y
         this.w = w
         this.h = h
         this.rounded = 20
         this.ready = false
+        this.text = text
     }
 
     render() {
@@ -44,7 +46,7 @@ class playButton {
                 this.ready = true
             }
             if (this.ready && !mouseIsPressed) {
-                scene = new Scene1()
+                scene1()
             }
         }
         else {
@@ -57,7 +59,7 @@ class playButton {
         textSize(20)
         strokeWeight(0)
         fill('white')
-        text("PLAY", this.x, this.y)
+        text(this.text, this.x, this.y)
         pop()
 
 

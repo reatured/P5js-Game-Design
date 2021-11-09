@@ -15,7 +15,7 @@ class Paddle {
         this.startPos = null
         this.endPos = createVector(mouseX, mouseY)
         this.hitArea = false //y between -150 and -200 or 150 and 200
-        this.r = 30
+        this.r = 60
 
     }
 
@@ -28,11 +28,11 @@ class Paddle {
         // console.log(this.hitArea +" || "+  frameCount  +" ||Iplay ")
         //entering hit area, 
         //ball is not moving forward
-        if(ball != null){
+        if (ball != null) {
             if (ball.served) {
                 if (ball.pos.z < -50 && this.hitArea == false && ball.movingForward == false) {
                     this.startPos = createVector(mouseX, mouseY)
-    
+
                     // this.endPos = createVector(mouseX, mouseY)
                     if (capsule != null) {
                         capsule.x = mouseX - w / 2
@@ -40,15 +40,15 @@ class Paddle {
                         capsule.x1 = mouseX - w / 2
                         capsule.y1 = mouseY - h / 2
                     }
-    
+
                     this.hitArea = true
                 }
-    
-    
+
+
             }
 
         }
-        
+
 
         // if (this.startPos != null) {
 
@@ -78,19 +78,21 @@ class Paddle {
             a_ballWithPaddle.play()
             this.endPos.sub(this.startPos)
             let x = map(this.endPos.x, 0, 100, 0, 1)
-            let y = map(this.endPos.y, 0, 30, 0, -3)
+            let y = map(this.endPos.y, 0, 35, 0, -4)
             y = min(20, y)
             // let y = map(endPos.y, )
             // let z = 
-            let returnVel = createVector(x, y, 10)
+            let returnVel = createVector(x, y, 8)
 
             ball.movingForward = true
             ball.vel = returnVel
-
-
+            ball.bounced = false;
+            ball.passNet = false;
 
         } else {
-            ball.losePoint()
+            ball.losePoint(2)
+            console.log("I lose, missed" + frameCount)
+            gameUI.iLose()
 
         }
 

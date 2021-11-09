@@ -8,30 +8,39 @@ class Scene1 {
     // bounds.populate();
     opponent = new Opponent()
     this.hasBall = true
+    cursor('grab')
+    gameUI = new UI()
+    console.log("Done")
   }
 
   render() {//main update every frame
-    for (let i = 0; i < ballsToBeDestoried.length; i++) {
-      ballsToBeDestoried[i].destroy();
-    }
+    
 
     opponent.render();
     bounds.render();
 
 
-    if (ball!= 0) {
+    if (ball != 0) {
       ball.updatePosition();
       bounds.bounceCheck()
+
+    }
+
+    if (ball != 0) {
       ball.render();
-      if(ball.served){
+      if (ball.served) {
         bounds.referee()
       }
-      
+
       
 
     }
 
 
+
+    if (ball == 0) {
+      bounds.net()
+    }
 
 
     if (capsule != null) {
@@ -41,8 +50,14 @@ class Scene1 {
     if (hitPoint != null) {
       hitPoint.render()
     }
+    for (let i = 0; i < ballsToBeDestoried.length; i++) {
 
+      ballsToBeDestoried[i].destroy();
+    }
 
     myPaddle.updatePos();
+    gameUI.checkWin()
+    gameUI.render()
+
   }
 }
