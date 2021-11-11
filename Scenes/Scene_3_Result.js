@@ -17,12 +17,15 @@ class Scene3 {
                 textAlign(CENTER, TOP)
                 text("Winner Winner", 0, -150)
                 pop()
+                break;
             case false:
                 push()
                 fill('white')
                 textAlign(CENTER, TOP)
                 text("Go Practice", 0, -150)
                 pop()
+
+                break;
         }
 
 
